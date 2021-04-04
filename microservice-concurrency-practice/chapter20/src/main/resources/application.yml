@@ -1,0 +1,26 @@
+server:
+  port: 2001
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: demo
+          uri: http://localhost:3001
+          filters:
+            - StripPrefix=1
+          predicates:
+            - Path=/demo/**
+# resilience4j 限速器（ratelimeter）配置
+resilience4j:
+  ratelimiter:
+    limiters:
+      # 名为 commonLimiter 的限速器
+      commonLimiter:
+        # 时间戳内限制通过的请求数 ，默认值是 50
+        limitForPeriod: 2000
+        # 配置时间戳， 默认是 500 ns
+        limitRefreshPeriodInMillis: 1000
+        # 超时时间
+        timeoutInMillis: 100
+
